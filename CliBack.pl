@@ -81,7 +81,7 @@ sub main()
             $line = <STDIN>;
             if ( defined $verbose ) { print("Debug : $line\n"); }
             $soc->send($line);
-            while(($data = <$soc>) ne "{}\n")
+            while(($data = <$soc>) !~ /{}\n/)
             {
                 print($data);
             }
