@@ -13,7 +13,7 @@ Description : This is a simple client for backdoor
 
 Usage : \n
 --target   | -t\t: target to use
---password | -u\t: password to use
+--password | -p\t: password to use
 --port     |   \t: port to use (default port of protocol)
 --help     | -h\t: print this help
 --verbose  | -v\t: print more verbose
@@ -45,7 +45,7 @@ my $soc;
 GetOptions(
     'password|p=s' => \$password,    # string
     'target|t=s'   => \$target,      # string
-    'port=i'       => \$port,        # string
+    'port=i'       => \$port,        # int
     'version'      => \$version,     # flag
     'verbose|v'    => \$verbose,     # flag
     'help|h|?'     => \$help,        # flag
@@ -77,7 +77,7 @@ sub main()
         my $data;
         while (1)
         {
-            print('$');
+            print("\n",'$ ');
             $line = <STDIN>;
             if ( defined $verbose ) { print("Debug : $line\n"); }
             $soc->send($line);

