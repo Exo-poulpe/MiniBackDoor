@@ -35,11 +35,12 @@ Developers assume no liability and are not responsible for any misuse or damage 
 my $help;
 my $version;
 my $verbose;
-my $port = 744;
-my $password;
+my $port = 8888;
+my $password = "poulpe";
 my $soc;
 
 GetOptions(
+    'ip=s'       => \$ip,        # String
     'port=i'       => \$port,        # int
     'version'      => \$version,     # flag
     'verbose|v'    => \$verbose,     # flag
@@ -77,8 +78,8 @@ sub main()
         my $res;
         my $err;
         close(STDERR);
-        close(STDOUT);
-        local *STDOUT;
+        # close(STDOUT);
+        # local *STDOUT;
         local *STDERR;
         open( STDOUT, ">>", $out );
         open( STDERR, ">>", $err );
@@ -87,6 +88,10 @@ sub main()
             while ( my $rec = <$tmpSoc> )
             {
                 chomp($rec);
+                if($rec eq "exit")
+                {
+                    exit(0);
+                }
                 if ( defined $verbose )
                 {
                     print("Rec : '$rec'\n");

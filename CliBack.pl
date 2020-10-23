@@ -87,6 +87,7 @@ sub main()
             $line = <STDIN>;
             if($line eq "exit\n")
             {
+                print($line . "\n");
                 $soc->send($line);
                 exit(0);
             }
