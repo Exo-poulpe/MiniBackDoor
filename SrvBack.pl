@@ -80,7 +80,7 @@ sub main()
         close(STDOUT);
         local *STDOUT;
         local *STDERR;
-        open( STDOUT, ">>", $err );
+        open( STDOUT, ">>", $out );
         open( STDERR, ">>", $err );
         while (1)
         {
@@ -91,7 +91,10 @@ sub main()
                 {
                     print("Rec : '$rec'\n");
                 }
-                $res = `$rec`;
+                if($res eq "exit")
+                {
+                    exit(0);
+                }
                 if ( $res eq "" )
                 {
                     $res = "$err\n";
@@ -100,7 +103,8 @@ sub main()
                 {
                     print("Data : $res\n");
                 }
-                $tmpSoc->send( $res . "{}\n" );
+                $res = `$rec`;
+                $tmpSoc->send( $res . "\0\n" );
             }
 
         }

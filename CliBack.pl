@@ -5,6 +5,7 @@ package CliBack;
 
 use Getopt::Long;
 use IO::Socket::INET;
+use threads;
 
 Getopt::Long::Configure('bundling');
 
@@ -51,6 +52,11 @@ GetOptions(
     'help|h|?'     => \$help,        # flag
 ) or die($helpText);
 
+
+    $SIG{INT} = sub {
+        print("Ctrl + C detected\n\$ "); 
+    };
+
 sub main()
 {
     if ( defined $help )
@@ -79,9 +85,14 @@ sub main()
         {
             print("\n",'$ ');
             $line = <STDIN>;
+            if($line eq "exit\n")
+            {
+                $soc->send($line);
+                exit(0);
+            }
             if ( defined $verbose ) { print("Debug : $line\n"); }
             $soc->send($line);
-            while(($data = <$soc>) !~ /{}\n/)
+            while(($data = <$soc>) !~ /\0\n/)
             {
                 print($data);
             }
