@@ -5,7 +5,7 @@ package CliBack;
 
 use Getopt::Long;
 use IO::Socket::INET;
-use threads;
+use MIME::Base64;
 
 Getopt::Long::Configure('bundling');
 
@@ -80,6 +80,7 @@ sub main()
             print "TCP Connection Success.\n";
         }
         my $line;
+        my $crypted;
         my $data;
         while (1)
         {
@@ -88,11 +89,13 @@ sub main()
             if($line eq "exit\n")
             {
                 print($line . "\n");
-                $soc->send($line);
+                $crypted = encode_base64($line);
+                $soc->send($crypted);
                 exit(0);
             }
             if ( defined $verbose ) { print("Debug : $line\n"); }
-            $soc->send($line);
+            $crypted = encode_base64($line);
+            $soc->send($crypted);
             while(($data = <$soc>) !~ /\0\n/)
             {
                 print($data);

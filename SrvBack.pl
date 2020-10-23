@@ -5,6 +5,7 @@ package SrvBack;
 
 use Getopt::Long;
 use IO::Socket::INET;
+use MIME::Base64;
 
 Getopt::Long::Configure('bundling');
 
@@ -87,6 +88,7 @@ sub main()
         {
             while ( my $rec = <$tmpSoc> )
             {
+                $rec = decode_base64($rec);
                 chomp($rec);
                 if($rec eq "exit")
                 {
