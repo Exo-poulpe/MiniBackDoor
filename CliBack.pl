@@ -15,7 +15,7 @@ Description : This is a simple client for backdoor
 Usage : \n
 --target   | -t\t: target to use
 --password | -p\t: password to use
---port     |   \t: port to use (default port of protocol)
+--port     |   \t: port to use (default port : 8888)
 --help     | -h\t: print this help
 --verbose  | -v\t: print more verbose
 
@@ -23,7 +23,7 @@ Usage : \n
 
 \n\nExample :
 
-perl CliBack.pl -t 192.168.1.1 --port 34232
+perl CliBack.pl -t 192.168.1.1 --port 8888
 ";
 
 my $versionText = "
@@ -38,7 +38,7 @@ Developers assume no liability and are not responsible for any misuse or damage 
 my $help;
 my $version;
 my $verbose;
-my $port;
+my $port = 8888;
 my $password;
 my $target;
 my $soc;
@@ -100,8 +100,6 @@ sub main()
             {
                 print($data);
             }
-
-            #print($data);
         }
         $soc->close();
     }
